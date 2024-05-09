@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaClient } from '@prisma/client';
@@ -15,8 +20,8 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
   create(createProductDto: CreateProductDto) {
     return this.product.create({
-      data: createProductDto
-    })
+      data: createProductDto,
+    });
   }
 
   async findAll(paginationDto: PaginationDto) {
@@ -27,20 +32,19 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     return {
       data: await this.product.findMany({
-        skip: ( page - 1) * limit,
-        take: limit
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       meta: {
         total: totalPages,
         page: page,
-        lastPage: lastPage
-      }
-    }
+        lastPage: lastPage,
+      },
+    };
   }
 
   async findOne(id: number) {
-    
-    const product = await this.product.findFirst({where: {id}});
+    const product = await this.product.findFirst({ where: { id } });
 
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
